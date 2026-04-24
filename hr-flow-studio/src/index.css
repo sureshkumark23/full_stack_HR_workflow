@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 14% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 14% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 14% 18%;
+
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 239 84% 96%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 14% 18%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 239 84% 96%;
+    --accent-foreground: 239 84% 40%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+
+    --node-start: 142 71% 45%;
+    --node-task: 217 91% 60%;
+    --node-approval: 25 95% 53%;
+    --node-automated: 270 91% 65%;
+    --node-end: 0 84% 60%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 239 84% 67%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 220 14% 98%;
+    --sidebar-foreground: 222 14% 18%;
+    --sidebar-primary: 239 84% 67%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 94%;
+    --sidebar-accent-foreground: 222 14% 18%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 239 84% 67%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 239 84% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ReactFlow */
+@import 'reactflow/dist/style.css';
+
+.dot-grid {
+  background-image: radial-gradient(circle, hsl(220 13% 88%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* animated dashed edges */
+.react-flow__edge-path {
+  stroke: hsl(var(--primary));
+  stroke-width: 2;
+}
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 6 4;
+  animation: flow-dash 0.6s linear infinite;
+}
+@keyframes flow-dash {
+  to { stroke-dashoffset: -10; }
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: hsl(var(--destructive));
+  stroke-width: 3;
+}
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--primary));
+  border: 2px solid white;
+}
+.react-flow__attribution { display: none; }
+
+/* node selected ring */
+.react-flow__node.selected .node-card,
+.react-flow__node.selected .node-pill {
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.35), 0 8px 24px -8px hsl(var(--primary) / 0.4);
+}
+
+/* iOS toggle */
+.toggle-switch {
+  @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors;
+}
+.toggle-switch[data-on="true"] { background: hsl(var(--primary)); }
+.toggle-switch[data-on="false"] { background: hsl(220 13% 80%); }
+.toggle-thumb {
+  @apply inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform;
+}
+
+/* Toast container */
+.toast-fade-in {
+  animation: toast-in 0.25s ease-out;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
