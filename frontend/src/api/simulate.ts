@@ -1,41 +1,29 @@
-import { Edge, Node } from 'reactflow';
-import { WorkflowNodeData, SimulationResult, SimulationStep } from '@/types/workflow.types';
-import { validateWorkflow, bfsFromStart } from '@/utils/graphUtils';
+import { SimulationResult, WorkflowNodeData } from '@/types/workflow.types';
+import { Node, Edge } from 'reactflow';
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-export interface SimulatePayload {
-  nodes: Node<WorkflowNodeData>[];
-  edges: Edge[];
-}
-
-export async function simulateWorkflow(payload: SimulatePayload): Promise<SimulationResult> {
-  const { nodes, edges } = payload;
-  const errors = validateWorkflow(nodes, edges);
-  if (errors.some((e) => e.type === 'error')) {
-    return { steps: [], errors };
-  }
-  const start = nodes.find((n) => n.data.nodeType === 'start');
-  if (!start) return { steps: [], errors };
-
-  const order = bfsFromStart(nodes, edges, start.id);
-  const steps: SimulationStep[] = [];
-  for (const n of order) {
-    await delay(200);
-    const r = Math.random();
-    const status: SimulationStep['status'] = r < 0.7 ? 'success' : r < 0.9 ? 'pending' : 'failed';
-    steps.push({
-      nodeId: n.id,
-      label: n.data.label,
-      type: n.data.nodeType,
-      status,
-      message:
-        status === 'success'
-          ? 'Step completed successfully'
-          : status === 'pending'
-          ? 'Awaiting response'
-          : 'Step execution failed',
+export const simulateWorkflow = async (data: { nodes: Node<WorkflowNodeData>[]; edges: Edge[] }): Promise<SimulationResult> => {
+  try {
+    const response = await fetch('http://127.0.0.1:8080/simulate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
+    
+    const result = await response.json();
+    
+    return {
+      success: result.status === 'success',
+      errors: result.status === 'error' ? [{ nodeId: 'sys', message: result.logs[0] }] : [],
+      logs: result.logs || [],
+    };
+  } catch (error) {
+    console.error('Simulation error:', error);
+    return {
+      success: false,
+      errors: [{ nodeId: 'sys', message: 'Could not connect to Python backend.' }],
+      logs: [],
+    };
   }
-  return { steps, errors };
-}
+};

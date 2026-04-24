@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import 'reactflow/dist/style.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
+    /* ... your variables stay down here ... */
     --background: 0 0% 100%;
     --foreground: 222 14% 18%;
 
@@ -92,9 +95,6 @@
     -webkit-font-smoothing: antialiased;
   }
 }
-
-/* ReactFlow */
-@import 'reactflow/dist/style.css';
 
 .dot-grid {
   background-image: radial-gradient(circle, hsl(220 13% 88%) 1px, transparent 1px);

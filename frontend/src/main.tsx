@@ -1,22 +1,11 @@
-import { Sidebar } from '@/components/canvas/Sidebar';
-import { WorkflowCanvas } from '@/components/canvas/WorkflowCanvas';
-import { NodeConfigPanel } from '@/components/canvas/NodeConfigPanel';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import 'reactflow/dist/style.css'
 
-const Index = () => {
-  return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
-      {/* 1. Left Sidebar (Palette) */}
-      <Sidebar />
-      
-      {/* 2. Middle Canvas (React Flow) */}
-      <main className="flex-1 h-full relative">
-        <WorkflowCanvas />
-      </main>
-      
-      {/* 3. Right Sidebar (Forms) */}
-      <NodeConfigPanel />
-    </div>
-  );
-};
-
-export default Index;
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
